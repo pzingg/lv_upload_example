@@ -9,23 +9,24 @@
     return_to: Routes.photo_show_path(@socket, :show, @photo) %>
 <% end %>
 
+
+<img src="<%= @photo.url %>" height="150">
+
 <ul>
-
-  <li>
-    <strong>Slug:</strong>
-    <%= @photo.slug %>
-  </li>
-
   <li>
     <strong>Caption:</strong>
     <%= @photo.caption %>
   </li>
 
   <li>
-    <strong>Path:</strong>
-    <%= @photo.path %>
+    <strong>File name:</strong>
+    <%= @photo.file_name %>
   </li>
 
+  <li>
+    <strong>File type:</strong>
+    <%= @photo.file_type %>
+  </li>
 </ul>
 
 <span><%= live_patch "Edit", to: Routes.photo_show_path(@socket, :edit, @photo), class: "button" %></span>

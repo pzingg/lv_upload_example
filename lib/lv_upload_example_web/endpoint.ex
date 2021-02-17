@@ -1,6 +1,8 @@
 defmodule LvUploadExampleWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :lv_upload_example
 
+  alias LvUploadExampleWeb.Plug.Parsers.UpChunk
+
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.
   # Set :encryption_salt if you would also like to encrypt it.
@@ -24,7 +26,7 @@ defmodule LvUploadExampleWeb.Endpoint do
     at: "/",
     from: :lv_upload_example,
     gzip: false,
-    only: ~w(css fonts images js favicon.ico robots.txt)
+    only: ~w(css fonts images js uploads favicon.ico robots.txt)
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
@@ -39,9 +41,10 @@ defmodule LvUploadExampleWeb.Endpoint do
   plug Plug.Telemetry, event_prefix: [:phoenix, :endpoint]
 
   plug Plug.Parsers,
-    parsers: [:urlencoded, :multipart, :json],
+    parsers: [UpChunk, :urlencoded, :multipart, :json],
     pass: ["*/*"],
-    json_decoder: Phoenix.json_library()
+    json_decoder: Phoenix.json_library(),
+    upchunk_limit: 20_000_000
 
   plug Plug.MethodOverride
   plug Plug.Head

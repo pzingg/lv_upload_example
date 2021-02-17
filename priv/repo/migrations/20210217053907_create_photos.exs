@@ -3,10 +3,10 @@ defmodule LvUploadExample.Repo.Migrations.CreatePhotos do
 
   def change do
     create table(:photos) do
-      add :slug, :string
       add :caption, :string
-      add :path, :string
-
+      add :file_name, :string
+      add :file_type, :string
+      add :url, :string, null: false
       timestamps()
     end
 

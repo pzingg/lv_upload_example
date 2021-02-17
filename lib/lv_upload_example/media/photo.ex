@@ -4,8 +4,9 @@ defmodule LvUploadExample.Media.Photo do
 
   schema "photos" do
     field :caption, :string
-    field :path, :string
-    field :slug, :string
+    field :file_name, :string
+    field :file_type, :string
+    field :url, :string
 
     timestamps()
   end
@@ -13,7 +14,7 @@ defmodule LvUploadExample.Media.Photo do
   @doc false
   def changeset(photo, attrs) do
     photo
-    |> cast(attrs, [:slug, :caption, :path])
-    |> validate_required([:slug, :caption, :path])
+    |> cast(attrs, [:caption, :file_name, :file_type, :url])
+    |> validate_required([:caption])
   end
 end

@@ -6,16 +6,26 @@ defmodule LvUploadExample.MediaTest do
   describe "photos" do
     alias LvUploadExample.Media.Photo
 
-    @valid_attrs %{caption: "some caption", path: "some path", slug: "some slug"}
-    @update_attrs %{caption: "some updated caption", path: "some updated path", slug: "some updated slug"}
-    @invalid_attrs %{caption: nil, path: nil, slug: nil}
+    @valid_attrs %{
+      caption: "some caption",
+      file_name: "some file name",
+      file_type: "some file type",
+      url: "http://localhost:4000/uploads/some_file"
+    }
+    @update_attrs %{
+      caption: "some updated caption",
+      file_name: "some updated file_name",
+      file_type: "some updated file_type",
+      url: "http://localhost:4000/uploads/some_updated_file"
+    }
+    @invalid_attrs %{caption: nil, file_name: nil, file_type: nil, url: nil}
 
     def photo_fixture(attrs \\ %{}) do
-      {:ok, photo} =
+      attrs =
         attrs
         |> Enum.into(@valid_attrs)
-        |> Media.create_photo()
 
+      {:ok, photo} = Media.create_photo(attrs)
       photo
     end
 
@@ -32,8 +42,8 @@ defmodule LvUploadExample.MediaTest do
     test "create_photo/1 with valid data creates a photo" do
       assert {:ok, %Photo{} = photo} = Media.create_photo(@valid_attrs)
       assert photo.caption == "some caption"
-      assert photo.path == "some path"
-      assert photo.slug == "some slug"
+      assert photo.file_name == "some file name"
+      assert photo.file_type == "some file type"
     end
 
     test "create_photo/1 with invalid data returns error changeset" do
@@ -44,8 +54,8 @@ defmodule LvUploadExample.MediaTest do
       photo = photo_fixture()
       assert {:ok, %Photo{} = photo} = Media.update_photo(photo, @update_attrs)
       assert photo.caption == "some updated caption"
-      assert photo.path == "some updated path"
-      assert photo.slug == "some updated slug"
+      assert photo.file_name == "some updated file_name"
+      assert photo.file_type == "some updated file_type"
     end
 
     test "update_photo/2 with invalid data returns error changeset" do

@@ -6,17 +6,45 @@
   phx_change: "validate",
   phx_submit: "save" %>
 
-  <%= label f, :slug %>
-  <%= text_input f, :slug %>
-  <%= error_tag f, :slug %>
+  <%= for {_ref, msg} <- @uploads.photo.errors do %>
+    <p class="alert alert-danger"><%= Phoenix.Naming.humanize(msg) %></p>
+  <% end %>
+
+  <%= if @action == :edit do %>
+  <label>Preview</label>
+  <img src="<%= @photo.url %>" height="150">
+  <label for="<%= @uploads.photo.ref %>">Change Photo</label>
+  <% else %>
+  <label for="<%= @uploads.photo.ref %>">Upload Photo</label>
+  <% end %>
+  <%= live_file_input @uploads.photo %>
+
+  <%= for entry <- @uploads.photo.entries do %>
+    <div class="row">
+      <div class="column">
+        <%= live_img_preview entry, height: 80 %>
+      </div>
+      <div class="column">
+        <progress max="100" value="<%= entry.progress %>">
+      </div>
+      <div class="column">
+        <a href="#" phx-target="<%= @myself %>" phx-click="cancel-entry" phx-value-ref="<%= entry.ref %>">
+          Cancel
+        </a>
+      </div>
+    </div>
+  <% end %>
 
   <%= label f, :caption %>
   <%= text_input f, :caption %>
   <%= error_tag f, :caption %>
 
-  <%= label f, :path %>
-  <%= text_input f, :path %>
-  <%= error_tag f, :path %>
+  <%= label f, :file_name %>
+  <%= text_input f, :file_name %>
+  <%= error_tag f, :file_name %>
+
+  <%= label f, :file_type %>
+  <%= text_input :photo, :file_type, value: @photo.file_type %>
 
   <%= submit "Save", phx_disable_with: "Saving..." %>
 </form>

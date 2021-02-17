@@ -58,7 +58,7 @@ config :lv_upload_example, LvUploadExampleWeb.Endpoint,
 config :lv_upload_example, LvUploadExampleWeb.Endpoint,
   live_reload: [
     patterns: [
-      ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
+      ~r"priv/static/[^uploads].*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
       ~r"lib/lv_upload_example_web/(live|views)/.*(ex)$",
       ~r"lib/lv_upload_example_web/templates/.*(eex)$"

@@ -8,6 +8,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = (env, options) => {
   const devMode = options.mode !== 'production';
+  const prodMode = options.mode === 'production';
 
   return {
     optimization: {
@@ -16,8 +17,9 @@ module.exports = (env, options) => {
         new OptimizeCSSAssetsPlugin({})
       ]
     },
+    // Define main app chunk and any conditional chunks
     entry: {
-      'app': glob.sync('./vendor/**/*.js').concat(['./js/app.js'])
+      'app': glob.sync('./vendor/**/*.js').concat(['./js/app.ts'])
     },
     output: {
       filename: '[name].js',
@@ -35,6 +37,12 @@ module.exports = (env, options) => {
           }
         },
         {
+          test: /\.ts$/,
+          use: {
+            loader: 'ts-loader'
+          }
+        },
+        {
           test: /\.[s]?css$/,
           use: [
             MiniCssExtractPlugin.loader,
@@ -44,10 +52,14 @@ module.exports = (env, options) => {
         }
       ]
     },
+    resolve: {
+      extensions: ['.js', '.ts'],
+      modules: [path.resolve(__dirname, 'node_modules')]
+    },
     plugins: [
       new MiniCssExtractPlugin({ filename: '../css/app.css' }),
       new CopyWebpackPlugin([{ from: 'static/', to: '../' }])
     ]
-    .concat(devMode ? [new HardSourceWebpackPlugin()] : [])
+      .concat(devMode ? [new HardSourceWebpackPlugin()] : [])
   }
 };

@@ -49,10 +49,11 @@ defmodule LvUploadExample.Media do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_photo(attrs \\ %{}) do
+  def create_photo(attrs, after_save \\ &{:ok, &1}) do
     %Photo{}
     |> Photo.changeset(attrs)
     |> Repo.insert()
+    |> after_save(after_save)
   end
 
   @doc """
@@ -67,11 +68,18 @@ defmodule LvUploadExample.Media do
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_photo(%Photo{} = photo, attrs) do
+  def update_photo(%Photo{} = photo, attrs, after_save \\ &{:ok, &1}) do
     photo
     |> Photo.changeset(attrs)
     |> Repo.update()
+    |> after_save(after_save)
   end
+
+  defp after_save({:ok, photo}, func) do
+    {:ok, _photo} = func.(photo)
+  end
+
+  defp after_save(error, _func), do: error
 
   @doc """
   Deletes a photo.

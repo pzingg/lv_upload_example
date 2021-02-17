@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "module": "es6",
+    "moduleResolution": "node",
+    "target": "es2017",
+    "lib": [
+      "dom",
+      "es2017",
+      "dom.iterable"
+    ],
+    "strict": true,
+    "sourceMap": false,
+    "typeRoots": [
+      "node_modules/@types"
+    ]
+  },
+  "exclude": [
+    "node_modules",
+    "typings",
+    "dist"
+  ]
+}

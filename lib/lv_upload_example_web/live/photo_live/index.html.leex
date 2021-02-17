@@ -12,19 +12,20 @@
 <table>
   <thead>
     <tr>
-      <th>Slug</th>
+      <th>Preview</th>
       <th>Caption</th>
-      <th>Path</th>
-
+      <th>File name</th>
+      <th>File type</th>
       <th></th>
     </tr>
   </thead>
   <tbody id="photos">
     <%= for photo <- @photos do %>
       <tr id="photo-<%= photo.id %>">
-        <td><%= photo.slug %></td>
+        <td><img src="<%= photo.url %>" height="64"></td>
         <td><%= photo.caption %></td>
-        <td><%= photo.path %></td>
+        <td><%= photo.file_name %></td>
+        <td><%= photo.file_type %></td>
 
         <td>
           <span><%= live_redirect "Show", to: Routes.photo_show_path(@socket, :show, photo) %></span>
