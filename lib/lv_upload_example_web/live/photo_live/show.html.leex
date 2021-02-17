@@ -1,0 +1,32 @@
+<h1>Show Photo</h1>
+
+<%= if @live_action in [:edit] do %>
+  <%= live_modal @socket, LvUploadExampleWeb.PhotoLive.FormComponent,
+    id: @photo.id,
+    title: @page_title,
+    action: @live_action,
+    photo: @photo,
+    return_to: Routes.photo_show_path(@socket, :show, @photo) %>
+<% end %>
+
+<ul>
+
+  <li>
+    <strong>Slug:</strong>
+    <%= @photo.slug %>
+  </li>
+
+  <li>
+    <strong>Caption:</strong>
+    <%= @photo.caption %>
+  </li>
+
+  <li>
+    <strong>Path:</strong>
+    <%= @photo.path %>
+  </li>
+
+</ul>
+
+<span><%= live_patch "Edit", to: Routes.photo_show_path(@socket, :edit, @photo), class: "button" %></span>
+<span><%= live_redirect "Back", to: Routes.photo_index_path(@socket, :index) %></span>
