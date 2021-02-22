@@ -1,13 +1,18 @@
 defmodule LvUploadExampleWeb.MapsLive do
   use LvUploadExampleWeb, :live_view
 
-  @env_file "priv/env.json"
-  @env_maps_api_key :google_maps_api_key
+  # Compile-time configuration
+  @api_key Application.get_env(:lv_upload_example, :google_maps) |> Keyword.get(:api_key)
+
+  # New York, New York
+  @map_lat 40.7128
+  @map_lng -74.0060
+  @range_lat 0.4
+  @range_lng 0.8
 
   @impl true
   def mount(_params, _session, socket) do
-    api_key = get_maps_api_key()
-    {:ok, assign(socket, api_key: api_key)}
+    {:ok, assign(socket, api_key: @api_key, map_lat: @map_lat, map_lng: @map_lng)}
   end
 
   @impl true
@@ -20,22 +25,9 @@ defmodule LvUploadExampleWeb.MapsLive do
 
   defp generate_random_sighting() do
     # https://developers.google.com/maps/documentation/javascript/reference/coordinates
-    # Latitude ranges between -90 and 90 degrees, inclusive.
-    # Longitude ranges between -180 and 180 degrees, inclusive
     %{
-      lat: Enum.random(-60..60),
-      lng: Enum.random(-180..180)
+      lat: @map_lat + :rand.uniform() * @range_lat - @range_lat / 2,
+      lng: @map_lng + :rand.uniform() * @range_lng - @range_lng / 2
     }
-  end
-
-  defp get_maps_api_key() do
-    {:ok, env} = load_env(@env_file)
-    Map.fetch!(env, @env_maps_api_key)
-  end
-
-  defp load_env(filename) do
-    with {:ok, body} <- File.read(filename) do
-      Jason.decode(body, keys: :atoms!)
-    end
   end
 end

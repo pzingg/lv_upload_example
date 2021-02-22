@@ -18,7 +18,7 @@ defmodule LvUploadExampleWeb.UpChunkController do
             #   upload: %Plug.Upload{content_type: "image/png",
             #   filename: "dann-residence-1.png",
             #   path: "priv/static/uploads/chunks/<uuid>.png"}}
-            %{range: range, upload: upload} ->
+            %{range: range, upload: _upload} ->
               Logger.debug("Do we need to do anything with the partially written file?")
 
               if range.range_start == 0 do

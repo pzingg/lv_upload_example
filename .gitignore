@@ -34,4 +34,4 @@ npm-debug.log
 /priv/static/
 
 # File containing API keys
-env.json
+/config/google_maps.exs

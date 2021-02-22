@@ -47,25 +47,32 @@ function handleNewSightingFunction(obj: object) {
   marker.setMap(window.map)
 }
 
+interface MapContainerDataset {
+  apikey: string
+  lat: string
+  lng: string
+  zoom: string
+}
+
 const GoogleMapsSightings = {
   mounted() {
     const hook = this as unknown as ViewHookInterface;
-    this.loadMap(hook.el.dataset.apikey)
+    this.loadMap(hook.el.dataset as MapContainerDataset)
 
     // handle new sightings as they show up
     hook.handleEvent('new_sighting', handleNewSightingFunction)
   },
-  loadMap(apiKey: string) {
+  loadMap(data: MapContainerDataset) {
     // ...additionalOptions,
     const loader = new Loader({
-      apiKey: apiKey,
+      apiKey: data.apikey,
       version: 'weekly'
     })
 
     loader.load().then(() => {
       const opts = {
-        center: { lat: -34.397, lng: 150.644 },
-        zoom: 8
+        center: { lat: parseFloat(data.lat), lng: parseFloat(data.lng) },
+        zoom: parseInt(data.zoom)
       }
       let map = new google.maps.Map(document.getElementById('map') as HTMLElement, opts)
       window.map = map
